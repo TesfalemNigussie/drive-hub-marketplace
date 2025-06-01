@@ -18,7 +18,7 @@ const VehicleDashboard = () => {
       vin: "1HGBH41JXMN109186",
       mileage: 25000,
       fuelType: "Gasoline",
-      image: "/placeholder.svg"
+      image: "https://images.unsplash.com/photo-1449157291145-7efd050a4d0e?w=300&h=200&fit=crop"
     },
     {
       id: 2,
@@ -28,7 +28,7 @@ const VehicleDashboard = () => {
       vin: "2HGFC2F59MH123456",
       mileage: 18500,
       fuelType: "Gasoline",
-      image: "/placeholder.svg"
+      image: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=300&h=200&fit=crop"
     },
     {
       id: 3,
@@ -38,7 +38,7 @@ const VehicleDashboard = () => {
       vin: "1FTFW1ET5NFA12345",
       mileage: 12000,
       fuelType: "Gasoline",
-      image: "/placeholder.svg"
+      image: "https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=300&h=200&fit=crop"
     },
     {
       id: 4,
@@ -48,7 +48,7 @@ const VehicleDashboard = () => {
       vin: "5YJ3E1EA9NF123456",
       mileage: 8500,
       fuelType: "Electric",
-      image: "/placeholder.svg"
+      image: "https://images.unsplash.com/photo-1496307653780-42ee777d4833?w=300&h=200&fit=crop"
     }
   ]);
 
@@ -68,7 +68,7 @@ const VehicleDashboard = () => {
         ...newVehicle,
         year: parseInt(newVehicle.year),
         mileage: parseInt(newVehicle.mileage) || 0,
-        image: "/placeholder.svg"
+        image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&h=200&fit=crop"
       }]);
       setNewVehicle({
         make: "",
@@ -82,11 +82,11 @@ const VehicleDashboard = () => {
   };
 
   return (
-    <div className="space-y-6 p-4">
+    <div className="space-y-4 p-2">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-slate-900">My Vehicles</h1>
-          <p className="text-slate-600 mt-1">Manage your vehicles and track information</p>
+          <h1 className="text-xl md:text-2xl font-bold text-slate-900">My Vehicles</h1>
+          <p className="text-slate-600 text-sm">Manage your vehicles and track information</p>
         </div>
         
         <Dialog>
@@ -181,19 +181,62 @@ const VehicleDashboard = () => {
         </Dialog>
       </div>
 
+      {/* Quick Stats - Updated to 2x2 Grid */}
+      <div className="grid grid-cols-2 gap-2 md:gap-3">
+        <Card className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+          <CardContent className="p-3">
+            <div className="text-center">
+              <p className="text-blue-100 text-xs">Total Vehicles</p>
+              <p className="text-xl font-bold">{vehicles.length}</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-r from-green-500 to-green-600 text-white">
+          <CardContent className="p-3">
+            <div className="text-center">
+              <p className="text-green-100 text-xs">Services Due</p>
+              <p className="text-xl font-bold">2</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-r from-purple-500 to-purple-600 text-white">
+          <CardContent className="p-3">
+            <div className="text-center">
+              <p className="text-purple-100 text-xs">Documents</p>
+              <p className="text-xl font-bold">8</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-r from-orange-500 to-orange-600 text-white">
+          <CardContent className="p-3">
+            <div className="text-center">
+              <p className="text-orange-100 text-xs">Avg Mileage</p>
+              <p className="text-xl font-bold">18K</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
       {/* Vehicle Grid - 2x2 Layout */}
-      <div className="grid grid-cols-2 gap-3 md:gap-4">
+      <div className="grid grid-cols-2 gap-2 md:gap-3">
         {vehicles.map((vehicle) => (
           <Card key={vehicle.id} className="group hover:shadow-lg transition-all duration-300">
-            <CardContent className="p-3 md:p-4">
-              <div className="w-full h-20 md:h-24 bg-gradient-to-r from-slate-200 to-slate-300 rounded-lg mb-3 flex items-center justify-center">
-                <Car className="w-8 h-8 md:w-10 md:h-10 text-slate-500" />
+            <CardContent className="p-2 md:p-3">
+              <div className="w-full h-16 md:h-20 rounded-lg mb-2 overflow-hidden">
+                <img 
+                  src={vehicle.image} 
+                  alt={`${vehicle.year} ${vehicle.make} ${vehicle.model}`}
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <div className="space-y-2">
-                <h3 className="font-semibold text-sm md:text-base text-slate-900 line-clamp-1">
+              <div className="space-y-1">
+                <h3 className="font-semibold text-xs md:text-sm text-slate-900 line-clamp-1">
                   {vehicle.year} {vehicle.make}
                 </h3>
-                <p className="text-xs md:text-sm text-slate-600 line-clamp-1">{vehicle.model}</p>
+                <p className="text-xs text-slate-600 line-clamp-1">{vehicle.model}</p>
                 <div className="space-y-1 text-xs text-slate-500">
                   <div className="flex justify-between">
                     <span>Mileage:</span>
@@ -205,14 +248,14 @@ const VehicleDashboard = () => {
                   </div>
                 </div>
                 
-                <div className="flex gap-1 pt-2">
-                  <Button variant="outline" size="sm" className="flex-1 text-xs p-2">
+                <div className="flex gap-1 pt-1">
+                  <Button variant="outline" size="sm" className="flex-1 text-xs p-1">
                     <FileText className="w-3 h-3" />
                   </Button>
-                  <Button variant="outline" size="sm" className="flex-1 text-xs p-2">
+                  <Button variant="outline" size="sm" className="flex-1 text-xs p-1">
                     <Calendar className="w-3 h-3" />
                   </Button>
-                  <Button variant="outline" size="sm" className="p-2">
+                  <Button variant="outline" size="sm" className="p-1">
                     <Settings className="w-3 h-3" />
                   </Button>
                 </div>
@@ -220,45 +263,6 @@ const VehicleDashboard = () => {
             </CardContent>
           </Card>
         ))}
-      </div>
-
-      {/* Quick Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-        <Card className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
-          <CardContent className="p-4">
-            <div className="text-center">
-              <p className="text-blue-100 text-sm">Total Vehicles</p>
-              <p className="text-2xl font-bold">{vehicles.length}</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-r from-green-500 to-green-600 text-white">
-          <CardContent className="p-4">
-            <div className="text-center">
-              <p className="text-green-100 text-sm">Services Due</p>
-              <p className="text-2xl font-bold">2</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-r from-purple-500 to-purple-600 text-white">
-          <CardContent className="p-4">
-            <div className="text-center">
-              <p className="text-purple-100 text-sm">Documents</p>
-              <p className="text-2xl font-bold">8</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-r from-orange-500 to-orange-600 text-white">
-          <CardContent className="p-4">
-            <div className="text-center">
-              <p className="text-orange-100 text-sm">Avg Mileage</p>
-              <p className="text-2xl font-bold">18K</p>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );
