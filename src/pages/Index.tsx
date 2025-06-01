@@ -8,6 +8,7 @@ import Marketplace from "@/components/Marketplace";
 import ServiceLocator from "@/components/ServiceLocator";
 import NewsCenter from "@/components/NewsCenter";
 import NotificationCenter from "@/components/NotificationCenter";
+import HomePage from "@/components/HomePage";
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState("home");
@@ -63,6 +64,8 @@ const Index = () => {
         return <NewsCenter />;
       case "notifications":
         return <NotificationCenter />;
+      case "home":
+        return <HomePage />;
       default:
         return (
           <div className="space-y-12">
@@ -120,27 +123,6 @@ const Index = () => {
                   </CardContent>
                 </Card>
               ))}
-            </section>
-
-            {/* Stats Section */}
-            <section className="bg-gradient-to-r from-slate-900 to-blue-900 rounded-2xl p-8 md:p-12 text-white">
-              <div className="text-center space-y-6">
-                <h2 className="text-3xl md:text-4xl font-bold">Trusted by Vehicle Owners Worldwide</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8">
-                  <div className="text-center">
-                    <div className="text-4xl md:text-5xl font-bold text-blue-400 mb-2">50K+</div>
-                    <div className="text-slate-300">Vehicles Managed</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-4xl md:text-5xl font-bold text-purple-400 mb-2">25K+</div>
-                    <div className="text-slate-300">Happy Users</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-4xl md:text-5xl font-bold text-green-400 mb-2">100K+</div>
-                    <div className="text-slate-300">Service Connections</div>
-                  </div>
-                </div>
-              </div>
             </section>
           </div>
         );

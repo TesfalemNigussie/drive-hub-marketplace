@@ -29,6 +29,26 @@ const VehicleDashboard = () => {
       mileage: 18500,
       fuelType: "Gasoline",
       image: "/placeholder.svg"
+    },
+    {
+      id: 3,
+      make: "Ford",
+      model: "F-150",
+      year: 2023,
+      vin: "1FTFW1ET5NFA12345",
+      mileage: 12000,
+      fuelType: "Gasoline",
+      image: "/placeholder.svg"
+    },
+    {
+      id: 4,
+      make: "Tesla",
+      model: "Model 3",
+      year: 2023,
+      vin: "5YJ3E1EA9NF123456",
+      mileage: 8500,
+      fuelType: "Electric",
+      image: "/placeholder.svg"
     }
   ]);
 
@@ -62,16 +82,16 @@ const VehicleDashboard = () => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 p-4">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Vehicle Dashboard</h1>
-          <p className="text-slate-600 mt-2">Manage your vehicles and track important information</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-slate-900">My Vehicles</h1>
+          <p className="text-slate-600 mt-1">Manage your vehicles and track information</p>
         </div>
         
         <Dialog>
           <DialogTrigger asChild>
-            <Button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg hover:shadow-xl transition-all duration-300">
+            <Button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg">
               <Plus className="w-4 h-4 mr-2" />
               Add Vehicle
             </Button>
@@ -161,43 +181,41 @@ const VehicleDashboard = () => {
         </Dialog>
       </div>
 
-      {/* Vehicle Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Vehicle Grid - 2x2 Layout */}
+      <div className="grid grid-cols-2 gap-3 md:gap-4">
         {vehicles.map((vehicle) => (
-          <Card key={vehicle.id} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-            <CardHeader className="pb-3">
-              <div className="w-full h-32 bg-gradient-to-r from-slate-200 to-slate-300 rounded-lg mb-4 flex items-center justify-center">
-                <Car className="w-16 h-16 text-slate-500" />
+          <Card key={vehicle.id} className="group hover:shadow-lg transition-all duration-300">
+            <CardContent className="p-3 md:p-4">
+              <div className="w-full h-20 md:h-24 bg-gradient-to-r from-slate-200 to-slate-300 rounded-lg mb-3 flex items-center justify-center">
+                <Car className="w-8 h-8 md:w-10 md:h-10 text-slate-500" />
               </div>
-              <CardTitle className="text-xl text-slate-900">
-                {vehicle.year} {vehicle.make} {vehicle.model}
-              </CardTitle>
-              <CardDescription className="text-slate-600">
-                VIN: {vehicle.vin}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex justify-between text-sm">
-                <span className="text-slate-600">Mileage:</span>
-                <span className="font-medium">{vehicle.mileage.toLocaleString()} miles</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-slate-600">Fuel Type:</span>
-                <span className="font-medium">{vehicle.fuelType}</span>
-              </div>
-              
-              <div className="flex gap-2 pt-3">
-                <Button variant="outline" size="sm" className="flex-1">
-                  <FileText className="w-4 h-4 mr-1" />
-                  Documents
-                </Button>
-                <Button variant="outline" size="sm" className="flex-1">
-                  <Calendar className="w-4 h-4 mr-1" />
-                  Service
-                </Button>
-                <Button variant="outline" size="sm">
-                  <Settings className="w-4 h-4" />
-                </Button>
+              <div className="space-y-2">
+                <h3 className="font-semibold text-sm md:text-base text-slate-900 line-clamp-1">
+                  {vehicle.year} {vehicle.make}
+                </h3>
+                <p className="text-xs md:text-sm text-slate-600 line-clamp-1">{vehicle.model}</p>
+                <div className="space-y-1 text-xs text-slate-500">
+                  <div className="flex justify-between">
+                    <span>Mileage:</span>
+                    <span className="font-medium">{vehicle.mileage.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Fuel:</span>
+                    <span className="font-medium">{vehicle.fuelType}</span>
+                  </div>
+                </div>
+                
+                <div className="flex gap-1 pt-2">
+                  <Button variant="outline" size="sm" className="flex-1 text-xs p-2">
+                    <FileText className="w-3 h-3" />
+                  </Button>
+                  <Button variant="outline" size="sm" className="flex-1 text-xs p-2">
+                    <Calendar className="w-3 h-3" />
+                  </Button>
+                  <Button variant="outline" size="sm" className="p-2">
+                    <Settings className="w-3 h-3" />
+                  </Button>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -205,51 +223,39 @@ const VehicleDashboard = () => {
       </div>
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
         <Card className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-blue-100">Total Vehicles</p>
-                <p className="text-3xl font-bold">{vehicles.length}</p>
-              </div>
-              <Car className="w-8 h-8 text-blue-200" />
+          <CardContent className="p-4">
+            <div className="text-center">
+              <p className="text-blue-100 text-sm">Total Vehicles</p>
+              <p className="text-2xl font-bold">{vehicles.length}</p>
             </div>
           </CardContent>
         </Card>
 
         <Card className="bg-gradient-to-r from-green-500 to-green-600 text-white">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-green-100">Services Due</p>
-                <p className="text-3xl font-bold">2</p>
-              </div>
-              <Calendar className="w-8 h-8 text-green-200" />
+          <CardContent className="p-4">
+            <div className="text-center">
+              <p className="text-green-100 text-sm">Services Due</p>
+              <p className="text-2xl font-bold">2</p>
             </div>
           </CardContent>
         </Card>
 
         <Card className="bg-gradient-to-r from-purple-500 to-purple-600 text-white">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-purple-100">Documents</p>
-                <p className="text-3xl font-bold">8</p>
-              </div>
-              <FileText className="w-8 h-8 text-purple-200" />
+          <CardContent className="p-4">
+            <div className="text-center">
+              <p className="text-purple-100 text-sm">Documents</p>
+              <p className="text-2xl font-bold">8</p>
             </div>
           </CardContent>
         </Card>
 
         <Card className="bg-gradient-to-r from-orange-500 to-orange-600 text-white">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-orange-100">Avg Mileage</p>
-                <p className="text-3xl font-bold">21.8K</p>
-              </div>
-              <MapPin className="w-8 h-8 text-orange-200" />
+          <CardContent className="p-4">
+            <div className="text-center">
+              <p className="text-orange-100 text-sm">Avg Mileage</p>
+              <p className="text-2xl font-bold">18K</p>
             </div>
           </CardContent>
         </Card>

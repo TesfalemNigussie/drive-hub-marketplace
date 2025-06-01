@@ -1,11 +1,14 @@
-
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
-import { Bell, Calendar, Car, MapPin, FileText, AlertTriangle, CheckCircle } from "lucide-react";
+import { Bell, Calendar, Car, MapPin, FileText, AlertTriangle, CheckCircle, MoreVertical } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 const NotificationCenter = () => {
+  const [expandedNotification, setExpandedNotification] = useState<number | null>(null);
+  
   const notifications = [
     {
       id: 1,
@@ -101,72 +104,88 @@ const NotificationCenter = () => {
     }
   };
 
+  const handleNotificationClick = (notificationId: number) => {
+    setExpandedNotification(expandedNotification === notificationId ? null : notificationId);
+  };
+
   return (
-    <div className="space-y-8">
-      <div className="text-center space-y-4">
-        <h1 className="text-3xl font-bold text-slate-900">Smart Notifications</h1>
-        <p className="text-slate-600 max-w-2xl mx-auto">
-          Stay on top of vehicle maintenance, renewals, and important updates with personalized notifications.
+    <div className="space-y-6 p-4">
+      <div className="text-center space-y-2">
+        <h1 className="text-2xl md:text-3xl font-bold text-slate-900">Smart Notifications</h1>
+        <p className="text-slate-600 text-sm md:text-base">
+          Stay on top of vehicle maintenance and important updates.
         </p>
       </div>
 
       {/* Notifications List */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-semibold text-slate-900">Recent Notifications</h2>
-          <Button variant="outline" size="sm">
-            Mark All as Read
+          <h2 className="text-xl font-semibold text-slate-900">Recent Notifications</h2>
+          <Button variant="outline" size="sm" className="text-xs">
+            Mark All Read
           </Button>
         </div>
 
         <div className="space-y-3">
           {notifications.map((notification) => {
             const IconComponent = getNotificationIcon(notification.type);
+            const isExpanded = expandedNotification === notification.id;
+            
             return (
               <Card 
                 key={notification.id} 
-                className={`border-l-4 transition-all duration-200 hover:shadow-md ${
+                className={`border-l-4 transition-all duration-200 ${
                   getNotificationColor(notification.type, notification.urgent)
                 } ${notification.read ? 'opacity-75' : ''}`}
               >
-                <CardContent className="p-4">
-                  <div className="flex items-start gap-4">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                <CardContent className="p-3 md:p-4">
+                  <div className="flex items-start gap-3">
+                    <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center ${
                       notification.urgent ? 'bg-red-500' : 'bg-blue-500'
                     }`}>
-                      <IconComponent className="w-5 h-5 text-white" />
+                      <IconComponent className="w-4 h-4 md:w-5 md:h-5 text-white" />
                     </div>
                     
-                    <div className="flex-1">
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <h3 className="font-semibold text-slate-900 flex items-center gap-2">
-                            {notification.title}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1 min-w-0" onClick={() => handleNotificationClick(notification.id)}>
+                          <h3 className="font-semibold text-slate-900 flex items-center gap-2 text-sm md:text-base">
+                            <span className="truncate">{notification.title}</span>
                             {notification.urgent && (
-                              <Badge className="bg-red-500 text-white text-xs">Urgent</Badge>
+                              <Badge className="bg-red-500 text-white text-xs flex-shrink-0">Urgent</Badge>
                             )}
                             {!notification.read && (
-                              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                              <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
                             )}
                           </h3>
-                          <p className="text-slate-600 mt-1">{notification.message}</p>
-                          <div className="flex items-center gap-3 mt-2 text-sm text-slate-500">
+                          <p className="text-slate-600 mt-1 text-sm line-clamp-2">{notification.message}</p>
+                          <div className="flex items-center gap-2 mt-2 text-xs text-slate-500">
                             <span>{notification.time}</span>
                             <span>•</span>
-                            <span className="font-medium">{notification.vehicle}</span>
+                            <span className="font-medium truncate">{notification.vehicle}</span>
                           </div>
                         </div>
                         
-                        <div className="flex gap-2">
-                          {notification.urgent && (
-                            <Button size="sm" className="bg-red-500 hover:bg-red-600 text-white">
-                              Take Action
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                              <MoreVertical className="h-4 w-4" />
                             </Button>
-                          )}
-                          <Button variant="ghost" size="sm">
-                            Dismiss
-                          </Button>
-                        </div>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            {notification.urgent && (
+                              <DropdownMenuItem className="text-red-600">
+                                Take Action
+                              </DropdownMenuItem>
+                            )}
+                            <DropdownMenuItem>
+                              Mark as Read
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                              Dismiss
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </div>
                     </div>
                   </div>
@@ -177,71 +196,25 @@ const NotificationCenter = () => {
         </div>
       </div>
 
-      {/* Notification Settings */}
-      <div className="space-y-6">
-        <h2 className="text-2xl font-semibold text-slate-900">Notification Preferences</h2>
-        
-        <Card className="border-0 shadow-lg">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Bell className="w-5 h-5" />
-              Delivery Methods
-            </CardTitle>
-            <CardDescription>
-              Choose how you want to receive different types of notifications
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {notificationSettings.map((setting, index) => (
-              <div key={index} className="space-y-3">
-                <div>
-                  <h4 className="font-medium text-slate-900">{setting.category}</h4>
-                  <p className="text-sm text-slate-600">{setting.description}</p>
-                </div>
-                
-                <div className="grid grid-cols-3 gap-6 pl-4">
-                  <div className="flex items-center justify-between">
-                    <label className="text-sm font-medium text-slate-700">Email</label>
-                    <Switch defaultChecked={setting.email} />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <label className="text-sm font-medium text-slate-700">SMS</label>
-                    <Switch defaultChecked={setting.sms} />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <label className="text-sm font-medium text-slate-700">Push</label>
-                    <Switch defaultChecked={setting.push} />
-                  </div>
-                </div>
-                
-                {index < notificationSettings.length - 1 && (
-                  <hr className="border-slate-200" />
-                )}
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-      </div>
-
       {/* Quick Actions */}
       <Card className="bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0">
-        <CardContent className="p-8">
-          <h3 className="text-2xl font-bold mb-4">Quick Actions</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Button className="bg-white/20 hover:bg-white/30 text-white border-white/30 h-auto p-4 flex flex-col items-center gap-2">
-              <Calendar className="w-6 h-6" />
+        <CardContent className="p-4 md:p-6">
+          <h3 className="text-lg md:text-xl font-bold mb-3">Quick Actions</h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <Button className="bg-white/20 hover:bg-white/30 text-white border-white/30 h-auto p-3 flex flex-col items-center gap-2 text-xs">
+              <Calendar className="w-5 h-5" />
               <span>Schedule Service</span>
             </Button>
-            <Button className="bg-white/20 hover:bg-white/30 text-white border-white/30 h-auto p-4 flex flex-col items-center gap-2">
-              <FileText className="w-6 h-6" />
+            <Button className="bg-white/20 hover:bg-white/30 text-white border-white/30 h-auto p-3 flex flex-col items-center gap-2 text-xs">
+              <FileText className="w-5 h-5" />
               <span>Renew Registration</span>
             </Button>
-            <Button className="bg-white/20 hover:bg-white/30 text-white border-white/30 h-auto p-4 flex flex-col items-center gap-2">
-              <MapPin className="w-6 h-6" />
+            <Button className="bg-white/20 hover:bg-white/30 text-white border-white/30 h-auto p-3 flex flex-col items-center gap-2 text-xs">
+              <MapPin className="w-5 h-5" />
               <span>Find Services</span>
             </Button>
-            <Button className="bg-white/20 hover:bg-white/30 text-white border-white/30 h-auto p-4 flex flex-col items-center gap-2">
-              <Car className="w-6 h-6" />
+            <Button className="bg-white/20 hover:bg-white/30 text-white border-white/30 h-auto p-3 flex flex-col items-center gap-2 text-xs">
+              <Car className="w-5 h-5" />
               <span>Update Vehicle</span>
             </Button>
           </div>
