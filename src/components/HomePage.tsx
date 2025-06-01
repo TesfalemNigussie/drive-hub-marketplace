@@ -57,7 +57,7 @@ const HomePage = () => {
       name: "Michelin Defender T+H Tire",
       price: "$129.99",
       rating: 4.8,
-      image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=300&h=200&fit=crop",
+      image: "https://static.tirerack.com/content/dam/tires/michelin/mi_defender_t_h_full.jpg",
       category: "Tires"
     },
     {
